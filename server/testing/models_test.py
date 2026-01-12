@@ -4,6 +4,15 @@ from app import app
 from models import db, Author, Post
 import logging
 from faker import Faker
+import pytest
+from app import app, db
+
+@pytest.fixture(scope="module")
+def test_app():
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.drop_all()  # clean up after tests
 
 
 LOGGER = logging.getLogger(__name__)
